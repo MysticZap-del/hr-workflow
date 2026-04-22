@@ -1,11 +1,6 @@
 # HR Workflow Designer
-### Tredence AI Engineering Internship — Case Study Submission
 
-A visual workflow designer where an HR admin can build, configure, and test internal workflows (onboarding, leave approval, document verification, etc.) using a drag-and-drop canvas.
-
----
-
-## 🚀 Quick Start
+## Start
 
 ```bash
 npm install
@@ -15,19 +10,18 @@ npm run dev
 Open **http://localhost:5173** in your browser.
 
 ```bash
-npm run build   # production build
-npm run preview # preview the build
+npm run build  
 ```
 
 ---
 
-## 🎥 Feature Walkthrough
+## Feature Walkthrough
 
 | Feature | How to use |
 |---|---|
 | **Add nodes** | Drag from the left panel onto the canvas |
 | **Connect nodes** | Drag from a node's bottom handle to another's top handle |
-| **Edit a node** | Click it — the Configure panel opens on the right |
+| **Edit a node** | Click it - the Configure panel opens on the right |
 | **Delete nodes/edges** | Select, then press `Delete` |
 | **Test the workflow** | Click **Test Workflow** (top bar) or **Run Simulation** (Sandbox tab) |
 | **Export** | Click **Export** → downloads `workflow.json` |
@@ -35,7 +29,7 @@ npm run preview # preview the build
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ### Tech Stack
 | Tool | Purpose |
@@ -52,7 +46,7 @@ npm run preview # preview the build
 ```
 src/
 ├── types/
-│   └── workflow.ts             # All TS types — discriminated union for node data
+│   └── workflow.ts             
 ├── api/
 │   └── mockApi.ts              # Mock GET /automations + POST /simulate
 │                               # Contains DFS cycle detection & topological sort
@@ -83,12 +77,12 @@ src/
 
 ---
 
-## 🎯 Key Design Decisions
+## Key Design Decisions
 
-### 1 — `useWorkflow` as the single source of truth
+### 1 `useWorkflow` as the single source of truth
 All node/edge state, selection, and mutations live in one hook. Components only receive the slice they need, keeping them pure and easy to test.
 
-### 2 — Discriminated union for node data
+### 2 Discriminated union for node data
 ```ts
 type WorkflowNodeData =
   | StartNodeData        // { nodeType: 'start'; ... }
@@ -97,23 +91,23 @@ type WorkflowNodeData =
   | AutomatedStepNodeData
   | EndNodeData;
 ```
-`NodeFormPanel` switches on `nodeType` to render the right form with full TypeScript inference — no `as any` casts needed in the forms themselves.
+`NodeFormPanel` switches on `nodeType` to render the right form with full TypeScript inference - no `as any` casts needed in the forms themselves.
 
-### 3 — `BaseNode` prevents duplication
+### 3 `BaseNode` prevents duplication
 All five node components delegate layout, handles, and selection styling to `BaseNode`. Adding a sixth node type is a matter of creating one component + one form, then adding a single entry to `nodeTypes`.
 
-### 4 — Mock API as pure async functions
-`mockApi.ts` exports plain functions with simulated `delay()`. Swapping in a real HTTP client means changing only this file — all consumers stay identical.
+### 4 Mock API as pure async functions
+`mockApi.ts` exports plain functions with simulated `delay()`. Swapping in a real HTTP client means changing only this file - all consumers stay identical.
 
-### 5 — Graph validation lives in the API layer
+### 5 Graph validation lives in the API layer
 Cycle detection (iterative DFS) and topological sort are colocated with `simulateWorkflow` because they are concerns of execution correctness, not UI state.
 
-### 6 — Dynamic parameter forms
-`AutomatedStepNodeForm` calls `GET /automations` once on mount. When the user picks an action, its `params` array is iterated to render exactly the right number of input fields — no hardcoding.
+### 6 Dynamic parameter forms
+`AutomatedStepNodeForm` calls `GET /automations` once on mount. When the user picks an action, its `params` array is iterated to render exactly the right number of input fields - no hardcoding.
 
 ---
 
-## ✅ Completed Features
+## Completed Features
 
 - [x] 5 custom node types with colour-coded React Flow components
 - [x] Drag-and-drop node creation from sidebar palette
@@ -132,17 +126,17 @@ Cycle detection (iterative DFS) and topological sort are colocated with `simulat
 
 ---
 
-## 🔮 What I'd Add With More Time
+## What I'd Add With More Time
 
-- [ ] **Undo / Redo** — `useReducer` with a history stack (or `zustand` with `temporal` middleware)
-- [ ] **Auto-layout** — Dagre or ELK for automatic node positioning
-- [ ] **Validation badges** — visual error indicators rendered directly on nodes
-- [ ] **Conditional edges** — branch logic with labelled edges (e.g. "Approved / Rejected")
-- [ ] **Node templates** — pre-built sub-graphs for common HR patterns
-- [ ] **Unit tests** — Jest + React Testing Library for hooks and forms
-- [ ] **E2E tests** — Playwright for the full drag-drop + simulate flow
-- [ ] **Backend persistence** — REST API + PostgreSQL for saving workflows by ID
-- [ ] **Real-time collaboration** — WebSockets / CRDT for multi-user editing
+- [ ] **Undo / Redo** - `useReducer` with a history stack (or `zustand` with `temporal` middleware)
+- [ ] **Auto-layout** - Dagre or ELK for automatic node positioning
+- [ ] **Validation badges** - visual error indicators rendered directly on nodes
+- [ ] **Conditional edges** - branch logic with labelled edges (e.g. "Approved / Rejected")
+- [ ] **Node templates** - pre-built sub-graphs for common HR patterns
+- [ ] **Unit tests** - Jest + React Testing Library for hooks and forms
+- [ ] **E2E tests** - Playwright for the full drag-drop + simulate flow
+- [ ] **Backend persistence** - REST API + PostgreSQL for saving workflows by ID
+- [ ] **Real-time collaboration** - WebSockets / CRDT for multi-user editing
 
 ---
 

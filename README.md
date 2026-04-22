@@ -140,7 +140,7 @@ Cycle detection (iterative DFS) and topological sort are colocated with `simulat
 
 ---
 
-## 📝 Assumptions
+## Assumptions
 
 1. No authentication or backend persistence was required per the spec.
 2. "Import" deserialises the JSON and logs the graph; re-populating the canvas from imported state was considered out of scope for the time-box (would need `setNodes`/`setEdges` called from App).
